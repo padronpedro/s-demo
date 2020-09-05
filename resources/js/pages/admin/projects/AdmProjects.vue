@@ -7,7 +7,10 @@
                 <s-button :buttonText="'Add a new project'" @clickAction="clickAddProject" style="float:right"></s-button>
             </div>
 
-            <p v-if="dataTable.length===0">No projects found</p>
+            <p v-if="(dataTable.length===0) && !loadingData">No clients found</p>
+            <div v-if="loadingData" class="loadingDatatable">
+                Loading projects list....
+            </div>
 
             <div class="tabBox" v-if="dataTable.length>0">
                 <table>
@@ -46,6 +49,7 @@
   export default {
     data () {
       return {
+          loadingData: false,
           dataTable: [],
           dataTableHeader: [
               { name: 'Name' },
@@ -73,8 +77,10 @@
         this.$goRouter('admin.projects.add')
       },
       getDataTable () {
+          this.loadingData = true
           axios.get('/api/v1/projects', {})
             .then(response => {
+                this.loadingData = false
                 let info = response.data
                 if(info.status === 'SUCCESS') {
                     this.dataTable = info.data
@@ -83,6 +89,7 @@
                 }
             })
             .catch(error => {
+                this.loadingData = false
                 this.$refs.snackbar.showSnack(('Error getting projects data') + ': ' + error)
             })
       },

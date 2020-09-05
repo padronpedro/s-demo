@@ -5,66 +5,71 @@
         <div class="top-module">
             <s-bread-crumbs :listLink="breadCrumbs" />
         </div>
-        <div class="flex-container">
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Client name'"
-                    v-model="name"
-                    :name="'name'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Contact name'"
-                    v-model="contact"
-                    :name="'contact'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Address'"
-                    v-model="address"
-                    :name="'address'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Email'"
-                    v-model="email"
-                    :name="'email'"
-                    :isRequired="true"
-                    :typeInput="'email'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Phone'"
-                    v-model="phone"
-                    :name="'phone'"
-                    @reportError="processError" >
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-            </div>
+        <div style="margin-top:20px" v-if="loadSkeleton">
+            <template-skeleton loading/>
         </div>
-        <div>
-            <s-textarea
-                :label="'Notes'"
-                v-model="notes"
-                :name="'notes'"
-                @reportError="processError">
-            </s-textarea>
-        </div>
-        <div class="box-bottom">
-            <s-button :buttonText="'Save'" @clickAction="clickSaveClient"></s-button>
-            <s-button :buttonText="'Cancel'" @clickAction="clickCancelClient"></s-button>
+        <div v-else>
+            <div class="flex-container">
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Client name'"
+                        v-model="name"
+                        :name="'name'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Contact name'"
+                        v-model="contact"
+                        :name="'contact'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Address'"
+                        v-model="address"
+                        :name="'address'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Email'"
+                        v-model="email"
+                        :name="'email'"
+                        :isRequired="true"
+                        :typeInput="'email'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Phone'"
+                        v-model="phone"
+                        :name="'phone'"
+                        @reportError="processError" >
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                </div>
+            </div>
+            <div>
+                <s-textarea
+                    :label="'Notes'"
+                    v-model="notes"
+                    :name="'notes'"
+                    @reportError="processError">
+                </s-textarea>
+            </div>
+            <div class="box-bottom">
+                <s-button :buttonText="'Save'" @clickAction="clickSaveClient"></s-button>
+                <s-button :buttonText="'Cancel'" @clickAction="clickCancelClient"></s-button>
+            </div>
         </div>
       </div>
     </div>
@@ -76,6 +81,7 @@
   export default {
 		data () {
 			return {
+                loadSkeleton: false,
 				name: '',
 				email: '',
 				phone: '',
@@ -108,6 +114,7 @@
                     this.editMode = true
                     this.clientId = this.$route.params.id
                     this.getClientData()
+                    this.loadSkeleton = true
                 }else{
                     this.formErrors = ['name', 'contact', 'address', 'email']
                 }
@@ -131,6 +138,7 @@
             getClientData () {
                 axios.get('/api/v1/clients/' + this.clientId, {})
                     .then(response => {
+                        this.loadSkeleton = false
                         let info = response.data
                         if(info.status === 'SUCCESS') {
                             this.name = info.data.name;
@@ -148,6 +156,7 @@
                         }
                     })
                     .catch(error => {
+                        this.loadSkeleton = false
                         this.$refs.snackbar.showSnack(('Error getting client data') + ': ' + error, 'error')
                     })
             },

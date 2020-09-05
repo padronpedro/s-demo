@@ -5,105 +5,115 @@
         <div class="top-module">
             <s-bread-crumbs :listLink="breadCrumbs" />
         </div>
-
-        <div class="flex-container">
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Project name'"
-                    v-model="name"
-                    :name="'name'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Start date'"
-                    :typeInput="'date'"
-                    v-model="start_date"
-                    :name="'start_date'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'End date'"
-                    :typeInput="'date'"
-                    v-model="end_date"
-                    :name="'end_date'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Budget'"
-                    :typeInput="'number'"
-                    v-model="budget"
-                    :name="'budget'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Final cost'"
-                    :typeInput="'number'"
-                    v-model="final_cost"
-                    :name="'final_cost'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Project link'"
-                    v-model="project_link"
-                    :name="'project_link'"
-                    :readOnly="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-textarea
-                    :label="'Constraints'"
-                    v-model="constraints"
-                    :name="'constraints'"
-                    @reportError="processError">
-                </s-textarea>
-            </div>
-            <div class="flex-container-col">
-                <s-textarea
-                    :label="'Description'"
-                    v-model="description"
-                    :name="'description'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-textarea>
-            </div>
-            <div class="flex-container-col" style="  position: relative;">
-                <s-dropdown
-                    :label="'Client'"
-                    v-model="client_id"
-                    :optionItems="clientList"
-                    style="position: absolute;bottom: 0;">
-                </s-dropdown>
-            </div>
+        <div style="margin-top:20px" v-if="loadSkeleton">
+            <template-skeleton loading/>
         </div>
-        <div style="margin-bottom: 10px">
-            <h4>Team members</h4>
-
-            <div v-for="(oneItem,index) in dataTable" :key="index" class="pic-team-list">
-                <s-team-card
-                    :name="oneItem.name"
-                    :position="oneItem.position"
-                    :picture="oneItem.picture"
-                    @checkboxResult="setTeamMembers"
-                    :initialValues="teamMembers"
-                    :id="oneItem.id"  />
+        <div v-else>
+            <div class="flex-container">
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Project name'"
+                        v-model="name"
+                        :name="'name'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Start date'"
+                        :typeInput="'date'"
+                        v-model="start_date"
+                        :name="'start_date'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'End date'"
+                        :typeInput="'date'"
+                        v-model="end_date"
+                        :name="'end_date'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Budget'"
+                        :typeInput="'number'"
+                        v-model="budget"
+                        :name="'budget'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Final cost'"
+                        :typeInput="'number'"
+                        v-model="final_cost"
+                        :name="'final_cost'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <div>
+                        <s-input-text
+                            :label="'Project link'"
+                            v-model="project_link"
+                            :name="'project_link'"
+                            :readOnly="true"
+                            @reportError="processError"
+                            >
+                        </s-input-text>
+                    </div>
+                    <div v-if="project_link">
+                        <s-button @clickAction="copyToClipboard" :buttonText="'Copy'"></s-button>
+                    </div>
+                </div>
+                <div class="flex-container-col">
+                    <s-textarea
+                        :label="'Constraints'"
+                        v-model="constraints"
+                        :name="'constraints'"
+                        @reportError="processError">
+                    </s-textarea>
+                </div>
+                <div class="flex-container-col">
+                    <s-textarea
+                        :label="'Description'"
+                        v-model="description"
+                        :name="'description'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-textarea>
+                </div>
+                <div class="flex-container-col" style="  position: relative;">
+                    <s-dropdown
+                        :label="'Client'"
+                        v-model="client_id"
+                        :optionItems="clientList"
+                        style="position: absolute;bottom: 0;">
+                    </s-dropdown>
+                </div>
             </div>
+            <div style="margin-bottom: 10px">
+                <h4>Team members</h4>
 
-        </div>
-        <div class="box-bottom">
-            <s-button :buttonText="'Save'" @clickAction="clickSaveProject"></s-button>
-            <s-button :buttonText="'Cancel'" @clickAction="clickCancelProject"></s-button>
+                <div v-for="(oneItem,index) in dataTable" :key="index" class="pic-team-list">
+                    <s-team-card
+                        :name="oneItem.name"
+                        :position="oneItem.position"
+                        :picture="oneItem.picture"
+                        @checkboxResult="setTeamMembers"
+                        :initialValues="teamMembers"
+                        :id="oneItem.id"  />
+                </div>
+                <input type="hidden" id="testing-code" :value="testingCode">
+            </div>
+            <div class="box-bottom">
+                <s-button :buttonText="'Save'" @clickAction="clickSaveProject"></s-button>
+                <s-button :buttonText="'Cancel'" @clickAction="clickCancelProject"></s-button>
+            </div>
         </div>
       </div>
     </div>
@@ -115,6 +125,7 @@
   export default {
 		data () {
 			return {
+                loadSkeleton: false,
 				name: '',
 				description: '',
 				start_date: '',
@@ -150,6 +161,9 @@
                 }else{
                     return false
                 }
+            },
+            testingCode () {
+                return this.project_link
             }
         },
         mounted () {
@@ -158,6 +172,7 @@
                     this.editMode = true
                     this.projectId = this.$route.params.id
                     this.getProjectData()
+                    this.loadSkeleton = true
                 }else{
                     this.formErrors = ['name', 'description']
                 }
@@ -166,6 +181,22 @@
             })
         },
 		methods: {
+            copyToClipboard () {
+                if(this.project_link){
+                    let testingCodeToCopy = document.querySelector('#testing-code')
+                    testingCodeToCopy.setAttribute('type', 'text')
+                    testingCodeToCopy.select()
+                    try {
+                        var successful = document.execCommand('copy');
+                        var msg = successful ? 'successful' : 'unsuccessful';
+                        this.$refs.snackbar.showSnack('Project link copied to clipboard', 'success')
+                    } catch (err) {
+                        this.$refs.snackbar.showSnack('Error copying project link to clipboard', 'error')
+                    }
+                    testingCodeToCopy.setAttribute('type', 'hidden')
+                    window.getSelection().removeAllRanges()
+                }
+            },
             processError (element, addDelete){
                 let aux = this.formErrors.findIndex(item => {
                     return item === element
@@ -226,6 +257,7 @@
             getProjectData () {
                 axios.get('/api/v1/projects/' + this.projectId, {})
                     .then(response => {
+                        this.loadSkeleton = false
                         let info = response.data
                         if(info.status === 'SUCCESS') {
                             this.name = info.data.name;
@@ -251,6 +283,7 @@
                         }
                     })
                     .catch(error => {
+                        this.loadSkeleton = false
                         this.$refs.snackbar.showSnack(('Error getting project data') + ': ' + error, 'error')
                     })
             },

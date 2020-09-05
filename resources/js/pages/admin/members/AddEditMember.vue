@@ -5,66 +5,71 @@
         <div class="top-module">
             <s-bread-crumbs :listLink="breadCrumbs" />
         </div>
-        <div class="flex-container">
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Name'"
-                    v-model="name"
-                    :name="'name'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Email'"
-                    v-model="email"
-                    :name="'email'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Position'"
-                    v-model="position"
-                    :name="'position'"
-                    :isRequired="true"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-input-text
-                    :label="'Phone'"
-                    v-model="phone"
-                    :name="'phone'"
-                    @reportError="processError">
-                </s-input-text>
-            </div>
-            <div class="flex-container-col">
-                <s-file-input
-                    v-model="picture"
-                    :label="'Picture'">
-                </s-file-input>
-            </div>
-            <div class="flex-container-col">
-                <img
-                    style="max-width: 100px"
-                    :src="'/members/' + picturePath"
-                    v-if="picturePath" />
-            </div>
+        <div style="margin-top:20px" v-if="loadSkeleton">
+            <template-skeleton loading/>
         </div>
-        <div>
-            <s-textarea
-                :label="'Background'"
-                v-model="description"
-                :name="'description'"
-                @reportError="processError">
-            </s-textarea>
-        </div>
-        <div class="box-bottom">
-            <s-button :buttonText="'Save'" @clickAction="clickSaveMember"></s-button>
-            <s-button :buttonText="'Cancel'" @clickAction="clickCancelMember"></s-button>
+        <div v-else>
+            <div class="flex-container">
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Name'"
+                        v-model="name"
+                        :name="'name'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Email'"
+                        v-model="email"
+                        :name="'email'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Position'"
+                        v-model="position"
+                        :name="'position'"
+                        :isRequired="true"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-input-text
+                        :label="'Phone'"
+                        v-model="phone"
+                        :name="'phone'"
+                        @reportError="processError">
+                    </s-input-text>
+                </div>
+                <div class="flex-container-col">
+                    <s-file-input
+                        v-model="picture"
+                        :label="'Picture'">
+                    </s-file-input>
+                </div>
+                <div class="flex-container-col">
+                    <img
+                        style="max-width: 100px"
+                        :src="'/members/' + picturePath"
+                        v-if="picturePath" />
+                </div>
+            </div>
+            <div>
+                <s-textarea
+                    :label="'Background'"
+                    v-model="description"
+                    :name="'description'"
+                    @reportError="processError">
+                </s-textarea>
+            </div>
+            <div class="box-bottom">
+                <s-button :buttonText="'Save'" @clickAction="clickSaveMember"></s-button>
+                <s-button :buttonText="'Cancel'" @clickAction="clickCancelMember"></s-button>
+            </div>
         </div>
       </div>
     </div>
@@ -76,6 +81,7 @@
   export default {
 		data () {
 			return {
+                loadSkeleton: false,
 				name: '',
 				email: '',
 				phone: '',
@@ -109,6 +115,7 @@
                     this.editMode = true
                     this.memberId = this.$route.params.id
                     this.getMemberData()
+                    this.loadSkeleton = true
                 }else{
                     this.formErrors = ['name', 'position', 'email']
                 }
@@ -132,6 +139,7 @@
             getMemberData () {
                 axios.get('/api/v1/members/' + this.memberId, {})
                     .then(response => {
+                        this.loadSkeleton = false
                         let info = response.data
                         if(info.status === 'SUCCESS') {
                             this.name = info.data.name;
