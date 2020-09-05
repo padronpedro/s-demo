@@ -4,7 +4,7 @@
     <div class="box-main-content">
         <div class="box-main-content-container">
             <div class="top-module">
-                <div>Manage Members</div>
+               <s-bread-crumbs :listLink="breadCrumbs" />
                 <s-button :buttonText="'Add a new member'" @clickAction="clickAddMember" style="float:right"></s-button>
             </div>
 
@@ -54,6 +54,10 @@
               { name: 'Phone' }
           ],
           snackText: ''
+          breadCrumbs: [
+                { text: 'Home', link: 'admin.home'},
+                { text: 'Members', link: ''}
+            ]
       }
     },
     mounted() {

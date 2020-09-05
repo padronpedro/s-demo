@@ -3,6 +3,9 @@
     <Menu />
     <div class="box-main-content">
       <div class="box-main-content-container">
+        <div class="top-module">
+            <s-bread-crumbs :listLink="breadCrumbs" />
+        </div>
         <div class="flex-container">
             <div class="flex-container-col">
                 <s-input-text :label="'Name'" v-model="name"></s-input-text>
@@ -48,6 +51,11 @@
                 editMode: false,
                 snackText: '',
                 clientId: ''
+                breadCrumbs: [
+                    { text: 'Home', link: 'admin.home'},
+                    { text: 'Clients', link: 'admin.clients'},
+                    { text: 'Client information', link: ''},
+                ]
 			}
         },
         mounted () {
