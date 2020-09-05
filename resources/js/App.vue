@@ -1,9 +1,10 @@
 <template>
+<div>
     <div class='wrap'>
         <div class='container'>
             <div class='bodywrap'>
                 <div class='left'>
-                    <div class="burger">
+                    <div class="burger" @click="openMenu">
                         <i class="material-icons">dehaze</i>
                     </div>
                 </div>
@@ -18,13 +19,31 @@
             </div>
         </div>
     </div>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" @click="closeMenu()"><i class="material-icons">close</i></a>
+        <a @click.prevent="goMenu('admin.home')">Home</a>
+        <a @click.prevent="goMenu('admin.projects')">Projects</a>
+        <a @click.prevent="goMenu('admin.members')">Members</a>
+        <a @click.prevent="goMenu('admin.clients')">Clients</a>
+    </div>
+</div>
 </template>
 
 
 
 <script>
 	export default {
-		mounted() {
+		methods: {
+            goMenu (toRoute) {
+                this.$goRouter(toRoute)
+                this.closeMenu()
+            },
+            openMenu (){
+                document.getElementById("mySidenav").style.width = "100%";
+            },
+            closeMenu() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
 		}
 	}
 </script>
@@ -194,5 +213,55 @@ html, body {
 }
 .center{
     width:calc(100% - 400px)
+}
+
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #4f00cf;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 80px;
+    font-weight: 700;
+    transition: opacity .3s;
+    line-height: 1;
+    margin-left: 80px;
+    font-family: 'Anton', sans-serif;
+    cursor: pointer;
+}
+
+.sidenav a:hover{
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 35px;
+  font-size: 36px;
+  margin-left: 0;
+}
+
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }
 </style>

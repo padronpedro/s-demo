@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Menu />
     <div class="box-main-content">
       <div class="box-main-content-container">
         <div class="top-module">

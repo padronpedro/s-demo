@@ -1,7 +1,5 @@
 <template>
     <div>
-        <Menu />
-
         <div class="help-menu">
             Select an option from the menu
         </div>
