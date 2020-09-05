@@ -1,17 +1,19 @@
 <template>
-  <div id="mainSnackbar">{{textToShow}}</div>
+  <div id="mainSnackbar" :style="(typeMessage==='error') ? 'background-color: red' : 'background-color: green;'">{{textToShow}}</div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-        textToShow: ''
+        textToShow: '',
+        typeMessage: 'error'
     }
   },
   methods: {
-    showSnack (value) {
+    showSnack (value, typeMessage) {
         this.textToShow = value
+        this.typeMessage = typeMessage
         var x = document.getElementById('mainSnackbar')
         x.className = 'show'
       setTimeout(function () {
@@ -27,7 +29,6 @@ export default {
   visibility: hidden;
   min-width: 250px;
   margin-left: -125px;
-  background-color: rgb(214, 31, 31);
   color: #fff;
   text-align: center;
   border-radius: 2px;
