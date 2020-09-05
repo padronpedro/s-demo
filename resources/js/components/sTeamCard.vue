@@ -9,7 +9,7 @@
         <div class="pic-box-position">
             {{position}}
         </div>
-        <div class="pic-box-check">
+        <div class="pic-box-check" v-if="!hideCheck">
             <div class="pic-box-check-top-select">
                 <label class="pic-box-container">
                     <input type="checkbox"  v-model="checked" @change="callAction(id)" :value="id">
@@ -73,6 +73,11 @@ export default {
         type: Array,
         required: false,
         default: []
+    },
+    hideCheck: {
+        type: Boolean,
+        required: false,
+        default: false
     }
   },
   methods: {
@@ -85,12 +90,10 @@ export default {
               if(aux) {
                   this.checkedProxy = true
                   this.checked = true
-              console.log('aux',aux,'checked', this.checked)
               }
           }
       },
       callAction (id) {
-          console.log('this.checked',this.checked,'id',id)
           this.$emit('checkboxResult',this.checked, id)
       }
   }
