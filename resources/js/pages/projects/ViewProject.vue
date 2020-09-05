@@ -12,13 +12,22 @@
                 :client="client"
                 :members="members"
             />
-            view project
         </div>
-        <div v-if="!$route.params.hash || (notFound && !loadingProject)">
-            Project not found
+        <div v-if="notFound">
+            <div class="title-form">
+                We didn't found your project
+            </div>
+            <div class="title-info-client">
+                Contact us for more information
+            </div>
+            <div class="button-contact">
+                <s-button :buttonText="'Contact us'" @clickAction="clicContact"></s-button>
+            </div>
         </div>
         <div v-if="loadingProject">
-            Loading project
+            <div class="title-form">
+                Loading project...
+            </div>
         </div>
     </div>
 </template>
@@ -28,7 +37,7 @@
 export default {
     data () {
         return {
-            notFound: true,
+            notFound: false,
             loadingProject: true,
             name: '',
             description: '',
@@ -37,7 +46,7 @@ export default {
             budget: '',
             constraints: '',
             final_cost: '',
-            client: [],
+            client: null,
             members: []
         }
     },
@@ -45,11 +54,17 @@ export default {
         this.$nextTick(function () {
             if(this.$route.params.hash){
                 this.getProjectInfo()
+            }else{
+                this.notFound = true
             }
         })
     },
     methods: {
+        clicContact () {
+            document.location='https://signifly.com/contact/'
+        },
         getProjectInfo() {
+            this.loadingProject = true
             axios.get('/api/v1/projects/hash/' + this.$route.params.hash, {})
                 .then(response => {
                     let info = response.data
@@ -73,14 +88,22 @@ export default {
                         }
                         this.loadingProject = false
                     } else {
-                        this.$refs.snackbar.showSnack(info.message, 'error')
                         this.notFound = true
+                        this.loadingProject = false
                     }
                 })
                 .catch(error => {
-                    this.$refs.snackbar.showSnack(('Error getting project data') + ': ' + error, 'error')
+                    console.log(error)
+                    this.notFound = true
+                    this.loadingProject = false
                 })
         }
     }
 }
 </script>
+
+<style scoped>
+.button-contact {
+    text-align: center;
+}
+</style>
