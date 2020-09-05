@@ -1,6 +1,6 @@
 <template>
     <div class="pic-box">
-        <div class="pic-box-img">
+        <div class="pic-box-img" @click="showDetails()">
             <img :src="'/members/' + (picture ? picture : 'no_image.jpeg')">
         </div>
         <div class="pic-box-name">
@@ -20,6 +20,7 @@
                 Select
             </div>
         </div>
+        <modal-member-card ref="modalMember" />
     </div>
 </template>
 
@@ -30,16 +31,6 @@ export default {
         checkedProxy: false,
         checked: false
     }
-  },
-  computed: {
-    //   checked: {
-    //     get () {
-    //         return this.value
-    //     },
-    //     set (val) {
-    //         this.checkedProxy = val
-    //     }
-    // }
   },
   mounted () {
       this.$nextTick(function () {
@@ -81,6 +72,9 @@ export default {
     }
   },
   methods: {
+      showDetails() {
+          this.$refs.modalMember.openModal(this.id)
+      },
       verifyCheck () {
         let auxList = this.initialValues
         if(auxList){
@@ -107,6 +101,7 @@ export default {
 }
 .pic-box-img{
     text-align: center;
+    cursor: pointer;
 }
 .pic-box-img img{
     max-width: 120px
