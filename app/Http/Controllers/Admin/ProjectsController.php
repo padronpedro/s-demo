@@ -191,4 +191,38 @@ class ProjectsController extends Controller
             ], 400);
         }
     }
+
+    /**
+     * Get project information by project_link column
+     *
+     * @param string project_link hash
+     * @return \Illuminate\Http\Response
+     */
+    public function getProjectByLink($project_link)
+    {
+        $result=array(
+            "status" => 'ERROR',
+            "message" => '',
+            "data" => array()
+        );
+
+        $auxProject = DB::table('projects')->where('project_link',$project_link)->get();
+
+        if($auxProject->count()>0)
+        {
+            $project = Project::find($auxProject[0]->id);
+            if($project)
+            {
+                $project->members;
+                $project->client;
+                $result['status'] = 'SUCCESS';
+                $result['data'] = $project;
+            }else{
+                $result['message'] = __('Project not found');
+            }
+        }else{
+            $result['message'] = __('Project not found');
+        }
+        return response($result, 200);
+    }
 }
