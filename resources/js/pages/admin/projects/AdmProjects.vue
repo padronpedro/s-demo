@@ -30,7 +30,7 @@
                             <td>{{dataTable.client ? dataTable.client.name : ''}}</td>
                             <td class="colActions">
                                 <s-icon :name="'Edit'" :iconName="'edit'" @actionCalled="editProject(dataTable.id)"></s-icon>
-                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="deleteProject(dataTable.id)"></s-icon>
+                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="openConfirmDelete(dataTable.id)"></s-icon>
                             </td>
                         </tr>
                     </tbody>
@@ -39,6 +39,7 @@
         </div>
     </div>
     <snack-bar ref="snackbar" :textToShow="snackText"/>
+    <modal ref="modalDetails" :modalTitle="modal.title" :modalContent="modal.content" :id="modal.id" @confirmed="deleteProject" />
   </div>
 </template>
 
@@ -53,7 +54,12 @@
               { name: 'End Date' },
               { name: 'Client' }
           ],
-          snackText: ''
+          snackText: '',
+          modal: {
+              title: '',
+              content: '',
+              id: 0,
+          },
           breadCrumbs: [
                 { text: 'Home', link: 'admin.home'},
                 { text: 'Projects', link: ''}
@@ -74,7 +80,7 @@
                 if(info.status === 'SUCCESS') {
                     this.dataTable = info.data
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {
@@ -84,19 +90,26 @@
       editProject (id) {
         this.$goRouter('', null, '/admin/projects/edit/' + id)
       },
+      openConfirmDelete(id){
+        this.modal.title = 'Delete project confirmation'
+        this.modal.content = 'Do you want to delete this project ?'
+        this.modal.id = id
+        this.$refs.modalDetails.openModal()
+      },
       deleteProject (id) {
+          this.$refs.snackbar.showSnack('Deleting project, wait a moment please', 'success')
           axios.delete('/api/v1/projects/' + id, {})
             .then(response => {
                 let info = response.data
                 if(info.status === 'SUCCESS') {
-                    this.$refs.snackbar.showSnack('Project deleted successfully')
+                    this.$refs.snackbar.showSnack('Project deleted successfully', 'success')
                     this.getDataTable()
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {
-                this.$refs.snackbar.showSnack(('Error getting projects data') + ': ' + error)
+                this.$refs.snackbar.showSnack(('Error getting projects data') + ': ' + error, 'error')
             })
       }
     }

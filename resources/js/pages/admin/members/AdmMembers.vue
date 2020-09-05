@@ -30,7 +30,7 @@
                             <td>{{dataTable.phone}}</td>
                             <td class="colActions">
                                 <s-icon :name="'Edit'" :iconName="'edit'" @actionCalled="editMember(dataTable.id)"></s-icon>
-                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="deleteMember(dataTable.id)"></s-icon>
+                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="openConfirmDelete(dataTable.id)"></s-icon>
                             </td>
                         </tr>
                     </tbody>
@@ -39,6 +39,8 @@
         </div>
     </div>
     <snack-bar ref="snackbar" :textToShow="snackText"/>
+    <modal ref="modalDetails" :modalTitle="modal.title" :modalContent="modal.content" :id="modal.id" @confirmed="deleteMember" />
+
   </div>
 </template>
 
@@ -53,7 +55,12 @@
               { name: 'Position' },
               { name: 'Phone' }
           ],
-          snackText: ''
+          snackText: '',
+          modal: {
+              title: '',
+              content: '',
+              id: 0,
+          },
           breadCrumbs: [
                 { text: 'Home', link: 'admin.home'},
                 { text: 'Members', link: ''}
@@ -74,7 +81,7 @@
                 if(info.status === 'SUCCESS') {
                     this.dataTable = info.data
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {
@@ -84,15 +91,22 @@
       editMember (id) {
         this.$goRouter('', null, '/admin/members/edit/' + id)
       },
+      openConfirmDelete(id){
+        this.modal.title = 'Delete member confirmation'
+        this.modal.content = 'Do you want to delete this member ?'
+        this.modal.id = id
+        this.$refs.modalDetails.openModal()
+      },
       deleteMember (id) {
+          this.$refs.snackbar.showSnack('Deleting a member, wait a moment please', 'success')
           axios.delete('/api/v1/members/' + id, {})
             .then(response => {
                 let info = response.data
                 if(info.status === 'SUCCESS') {
-                    this.$refs.snackbar.showSnack('Member deleted successfully')
+                    this.$refs.snackbar.showSnack('Member deleted successfully', 'success')
                     this.getDataTable()
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {

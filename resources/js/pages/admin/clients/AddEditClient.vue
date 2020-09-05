@@ -8,25 +8,60 @@
         </div>
         <div class="flex-container">
             <div class="flex-container-col">
-                <s-input-text :label="'Name'" v-model="name"></s-input-text>
+                <s-input-text
+                    :label="'Client name'"
+                    v-model="name"
+                    :name="'name'"
+                    :isRequired="true"
+                    @reportError="processError">
+                </s-input-text>
             </div>
             <div class="flex-container-col">
-                <s-input-text :label="'Contact'" v-model="contact"></s-input-text>
+                <s-input-text
+                    :label="'Contact name'"
+                    v-model="contact"
+                    :name="'contact'"
+                    :isRequired="true"
+                    @reportError="processError">
+                </s-input-text>
             </div>
             <div class="flex-container-col">
-                <s-input-text :label="'Address'" v-model="address"></s-input-text>
+                <s-input-text
+                    :label="'Address'"
+                    v-model="address"
+                    :name="'address'"
+                    :isRequired="true"
+                    @reportError="processError">
+                </s-input-text>
             </div>
             <div class="flex-container-col">
-                <s-input-text :label="'Phone'" v-model="phone"></s-input-text>
+                <s-input-text
+                    :label="'Email'"
+                    v-model="email"
+                    :name="'email'"
+                    :isRequired="true"
+                    :typeInput="'email'"
+                    @reportError="processError">
+                </s-input-text>
             </div>
             <div class="flex-container-col">
-                <s-input-text :label="'Email'" v-model="email"></s-input-text>
+                <s-input-text
+                    :label="'Phone'"
+                    v-model="phone"
+                    :name="'phone'"
+                    @reportError="processError" >
+                </s-input-text>
             </div>
             <div class="flex-container-col">
             </div>
         </div>
         <div>
-            <s-textarea :label="'Notes'" v-model="notes"></s-textarea>
+            <s-textarea
+                :label="'Notes'"
+                v-model="notes"
+                :name="'notes'"
+                @reportError="processError">
+            </s-textarea>
         </div>
         <div class="box-bottom">
             <s-button :buttonText="'Save'" @clickAction="clickSaveClient"></s-button>
@@ -50,7 +85,8 @@
 				notes: '',
                 editMode: false,
                 snackText: '',
-                clientId: ''
+                clientId: '',
+                formErrors: [],
                 breadCrumbs: [
                     { text: 'Home', link: 'admin.home'},
                     { text: 'Clients', link: 'admin.clients'},
@@ -58,16 +94,41 @@
                 ]
 			}
         },
+        computed: {
+            isFormValid () {
+                if ((this.formErrors.length === 0) && this.name && this.contact && this.address && this.email){
+                    return true
+                }else{
+                    return false
+                }
+            }
+        },
         mounted () {
             this.$nextTick(function () {
                 if (!_.isEmpty(this.$route.params)) {
                     this.editMode = true
                     this.clientId = this.$route.params.id
                     this.getClientData()
+                }else{
+                    this.formErrors = ['name', 'contact', 'address', 'email']
                 }
             })
         },
 		methods: {
+            processError (element, addDelete){
+                let aux = this.formErrors.findIndex(item => {
+                    return item === element
+                })
+                if(addDelete){
+                    if(aux === -1){
+                        this.formErrors.push(element)
+                    }
+                }else{
+                    if(aux>=0){
+                        this.formErrors.splice(aux,1)
+                    }
+                }
+            },
             getClientData () {
                 axios.get('/api/v1/clients/' + this.clientId, {})
                     .then(response => {
@@ -81,49 +142,55 @@
                             this.notes = info.data.notes;
 
                         } else {
-                            this.$refs.snackbar.showSnack(info.message)
+                            this.$refs.snackbar.showSnack(info.message, 'error')
                             setTimeout(() => {
                                 this.$goRouter('admin.clients')
                             }, 2000)
                         }
                     })
                     .catch(error => {
-                        this.$refs.snackbar.showSnack(('Error getting client data') + ': ' + error)
+                        this.$refs.snackbar.showSnack(('Error getting client data') + ': ' + error, 'error')
                     })
             },
 			clickSaveClient () {
-                let formData = {
-                    name: this.name,
-                    email: this.email,
-                    phone: this.phone,
-                    contact: this.contact,
-                    address: this.address,
-                    notes: this.notes
-                }
-                if(!this.editMode){
-                    axios.post('/api/v1/clients', formData)
-                        .then(response => {
-                            if(response.data.status === 'SUCCESS') {
-                                this.$goRouter('admin.clients')
-                            } else {
-                                this.$refs.snackbar.showSnack(response.data.message)
-                            }
-                        })
-                        .catch(error => {
-                            this.$refs.snackbar.showSnack(error)
-                        })
+                if(this.isFormValid){
+
+                    let formData = {
+                        name: this.name,
+                        email: this.email,
+                        phone: this.phone,
+                        contact: this.contact,
+                        address: this.address,
+                        notes: this.notes
+                    }
+                    this.$refs.snackbar.showSnack('Saving client information, wait a moment please', 'success')
+                    if(!this.editMode){
+                        axios.post('/api/v1/clients', formData)
+                            .then(response => {
+                                if(response.data.status === 'SUCCESS') {
+                                    this.$goRouter('admin.clients')
+                                } else {
+                                    this.$refs.snackbar.showSnack(response.data.message, 'error')
+                                }
+                            })
+                            .catch(error => {
+                                this.$refs.snackbar.showSnack(error, 'error')
+                            })
+                    }else{
+                        axios.put('/api/v1/clients/' + this.clientId, formData)
+                            .then(response => {
+                                if(response.data.status === 'SUCCESS') {
+                                    this.$goRouter('admin.clients')
+                                } else {
+                                    this.$refs.snackbar.showSnack(response.data.message, 'error')
+                                }
+                            })
+                            .catch(error => {
+                                this.$refs.snackbar.showSnack(error, 'error')
+                            })
+                    }
                 }else{
-                    axios.put('/api/v1/clients/' + this.clientId, formData)
-                        .then(response => {
-                            if(response.data.status === 'SUCCESS') {
-                                this.$goRouter('admin.clients')
-                            } else {
-                                this.$refs.snackbar.showSnack(response.data.message)
-                            }
-                        })
-                        .catch(error => {
-                            this.$refs.snackbar.showSnack(error)
-                        })
+                    this.$refs.snackbar.showSnack('Please complete the required fields', 'error')
                 }
 			},
 			clickCancelClient () {

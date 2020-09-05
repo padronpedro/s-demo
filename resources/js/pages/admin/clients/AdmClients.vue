@@ -30,7 +30,7 @@
                             <td>{{dataTable.email}}</td>
                             <td class="colActions">
                                 <s-icon :name="'Edit'" :iconName="'edit'" @actionCalled="editClient(dataTable.id)"></s-icon>
-                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="deleteClient(dataTable.id)"></s-icon>
+                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="openConfirmDelete(dataTable.id)"></s-icon>
                             </td>
                         </tr>
                     </tbody>
@@ -39,6 +39,8 @@
         </div>
     </div>
     <snack-bar ref="snackbar" :textToShow="snackText"/>
+    <modal ref="modalDetails" :modalTitle="modal.title" :modalContent="modal.content" :id="modal.id" @confirmed="deleteClient" />
+
   </div>
 </template>
 
@@ -53,7 +55,12 @@
               { name: 'Phone' },
               { name: 'Email' }
           ],
-          snackText: ''
+          snackText: '',
+          modal: {
+              title: '',
+              content: '',
+              id: 0,
+          },
           breadCrumbs: [
                 { text: 'Home', link: 'admin.home'},
                 { text: 'Clients', link: ''}
@@ -74,29 +81,36 @@
                 if(info.status === 'SUCCESS') {
                     this.dataTable = info.data
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {
-                this.$refs.snackbar.showSnack(('Error getting clients data') + ': ' + error)
+                this.$refs.snackbar.showSnack(('Error getting clients data') + ': ' + error, 'error')
             })
       },
       editClient (id) {
         this.$goRouter('', null, '/admin/clients/edit/' + id)
       },
+      openConfirmDelete(id){
+        this.modal.title = 'Delete client confirmation'
+        this.modal.content = 'Do you want to delete this client ?'
+        this.modal.id = id
+        this.$refs.modalDetails.openModal()
+      },
       deleteClient (id) {
+          this.$refs.snackbar.showSnack('Deleting client, wait a moment please', 'success')
           axios.delete('/api/v1/clients/' + id, {})
             .then(response => {
                 let info = response.data
                 if(info.status === 'SUCCESS') {
-                    this.$refs.snackbar.showSnack('Client deleted successfully')
+                    this.$refs.snackbar.showSnack('Client deleted successfully', 'success')
                     this.getDataTable()
                 } else {
-                    this.$refs.snackbar.showSnack(info.message)
+                    this.$refs.snackbar.showSnack(info.message, 'error')
                 }
             })
             .catch(error => {
-                this.$refs.snackbar.showSnack(('Error getting clients data') + ': ' + error)
+                this.$refs.snackbar.showSnack(('Error getting clients data') + ': ' + error, 'error')
             })
       }
     }
