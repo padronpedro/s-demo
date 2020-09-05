@@ -1,12 +1,17 @@
 <template>
     <div class="sinput">
-        <label for="">{{label}}</label>
+        <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
         <input
-            type="text"
+            :type="typeInput"
             class="inInput"
             @input="$emit('input',$event.target.value)"
             :value="$attrs.value"
-            autocomplete="new-password">
+            :required="isRequired"
+            :autocomplete="'new-password'"
+            :name="name"
+            :readonly="readOnly"
+            @blur="checkLabel($event)"
+            :style="(typeInput==='text') ? 'margin-top: 15px;' : 'margin-top: 8px;'">
         <span class="inSpan"></span>
     </div>
 </template>
@@ -15,14 +20,46 @@
     export default {
         data () {
             return {
+                errorInfo: ''
             }
         },
         props: {
             label: {
                 type: String,
                 required: true
+            },
+            typeInput: {
+                type: String,
+                required: false,
+                default: 'text'
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            readOnly: {
+                type: Boolean,
+                required: false,
+                default: false
             }
         },
+        methods: {
+            checkLabel (e) {
+                if(this.isRequired){
+                    this.errorInfo = e.target.validationMessage
+                    if(this.errorInfo){
+                        this.$emit('reportError', this.name, true)
+                    }else{
+                        this.$emit('reportError', this.name, false)
+                    }
+                }
+            }
+        }
     }
 </script>
 
@@ -34,7 +71,7 @@
 }
 .sinput label {
     display: block;
-    font-weight: 500;
+    font-weight: bold;
     color: black;
     font-size: 12px;
     text-align: left;
@@ -42,7 +79,6 @@
 .sinput input{
     outline: 0;
     width: 100%;
-    margin-top: 8px;
     padding: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -65,7 +101,7 @@
   transition: width 350ms ease-in-out;
 }
 .inInput:focus + span {
-  width: 90%;
+  width: 99%;
   -webkit-transition: width 300ms ease-in-out;
   transition: width 300ms ease-in-out;
 }
