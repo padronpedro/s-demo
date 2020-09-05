@@ -147,7 +147,6 @@ class ProjectsController extends Controller
             $changeProject->budget = $request->input('budget');
             $changeProject->constraints = $request->input('constraints');
             $changeProject->final_cost = $request->input('final_cost');
-            $changeProject->project_link = $request->input('project_link');
             $changeProject->client_id = $request->input('client_id');
 
             $changeProject->save();
