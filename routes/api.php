@@ -27,4 +27,7 @@ Route::prefix('v1')->group(function () {
 
     // Projects routes
     Route::resource('projects', 'Admin\ProjectsController');
+    // get Project by hash link
+    Route::get('/projects/hash/{project_link}', 'Admin\ProjectsController@getProjectByLink')->name('projects.bylink');
+
 });
