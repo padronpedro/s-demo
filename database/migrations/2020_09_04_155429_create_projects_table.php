@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->text('description');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->decimal('budget');
+            $table->decimal('budget')->nullable();
             $table->text('constraints')->nullable();
             $table->decimal('final_cost')->nullable();
             $table->string('project_link')->nullable();

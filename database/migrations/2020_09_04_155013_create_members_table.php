@@ -17,7 +17,7 @@ class CreateMembersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('position');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->text('description')->nullable();
             $table->string('phone')->nullable();
             $table->string('picture')->nullable();
