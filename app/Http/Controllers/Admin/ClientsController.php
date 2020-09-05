@@ -65,7 +65,11 @@ class ClientsController extends Controller
             Log::info('New Client added :: '.json_encode($client));
 
             $result['status'] = 'SUCCESS';
+            $result['data'] = $client;
         }else{
+            $result['data'] = array(
+                'id' => $checkName[0]->id
+            );
             $result['message'] = __('This client already exists');
         }
         return response($result, 200);
