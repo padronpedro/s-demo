@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :src="mySVG" width="70%">
+        <a href="https://signifly.com" target="_blank"><img :src="mySVG" width="70%"></a>
     </div>
 </template>
 
