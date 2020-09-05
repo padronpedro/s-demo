@@ -1,7 +1,6 @@
 import VueRouter from 'vue-router'
 // Pages
 import Home from '../pages/Home'
-import Second from '../pages/Second'
 
 // Admin
 import HomeAdmin from '../pages/admin/Home'
@@ -14,17 +13,17 @@ import AddClients from '../pages/admin/clients/AddEditClient'
 import AdmProjects from '../pages/admin/projects/AdmProjects'
 import AddProjects from '../pages/admin/projects/AddEditProject'
 
+import NotFoundComponent from '../pages/NotFoundComponent'
+// Client side
+import ViewProject from '../pages/projects/ViewProject'
+import ClientRequest from '../pages/projects/ClientRequest'
+
 // Routes
 const routes = [
 	{
 		path: '/',
 		name: 'home',
 		component: Home
-	},
-	{
-		path: '/second',
-		name: 'second',
-		component: Second
 	},
 	// Admin section
 	{
@@ -76,7 +75,23 @@ const routes = [
 		path: '/admin/projects/edit/:id',
 		name: 'admin.projects.edit',
 		component: AddProjects
+    },
+    // client side
+    {
+		path: '/view/:hash',
+		name: 'client.project',
+		component: ViewProject
+    },
+    {
+		path: '/project',
+		name: 'client.project.request',
+		component: ClientRequest
 	},
+    {
+      path: '*',
+      component: NotFoundComponent
+    }
+
 ]
 
 const router = new VueRouter({
