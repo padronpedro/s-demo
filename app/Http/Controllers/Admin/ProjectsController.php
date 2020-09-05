@@ -96,10 +96,10 @@ class ProjectsController extends Controller
         );
 
         $project = Project::find($id);
-        $project->members;
 
         if($project)
         {
+            $project->members;
             $result['status'] = 'SUCCESS';
             $result['data'] = $project;
         }else{
