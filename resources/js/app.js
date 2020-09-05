@@ -5,11 +5,15 @@
  */
 
 require('./bootstrap');
+const CryptoJS = require('crypto-js');
+const passphrase = process.env.MIX_PASSPHARE
+
 import App from './App.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import router from './router/router';
+import Vue from 'vue';
 
 window.Vue = require('vue');
 
@@ -26,6 +30,23 @@ Vue.prototype.$goRouter = function (name, params, path) {
 	} else {
 		this.$router.push({ name: name, params: params }).catch(err => { err = null })
 	}
+}
+
+Vue.prototype.$encryptWithAES = function (textToEncrypt) {
+    return CryptoJS.MD5(CryptoJS.DES.encrypt(textToEncrypt, passphrase).toString()).toString()
+}
+
+Vue.prototype.$decryptWithAES = function (textToDecrypt) {
+    const bytes = CryptoJS.DES.decrypt(textToDecrypt, passphrase)
+    const originalText = bytes.toString(CryptoJS.enc.Utf8)
+    return originalText;
+}
+
+
+// Allows to generate an URL for the project
+Vue.prototype.$getLinkProject = function (projectText) {
+    let auxURL = process.env.MIX_APP_URL + '/view/' + projectText
+    return auxURL
 }
 /**
  * The following block of code may be used to automatically register your
