@@ -5,13 +5,17 @@
             <div class="select-button">
             <span v-if="value" class="file-selected-name">
                 <i class="material-icons">attach_file</i>
-                Selected File: {{value.name}}
+                Selected file: {{value.name}}
             </span>
             <span v-else>
                 <i class="material-icons">attach_file</i>
-                Select File</span>
+                Select a file</span>
             </div>
-            <input type="file" @change="handleFileChange"/>
+            <input
+                type="file"
+                @change="handleFileChange"
+                accept="image/png, image/jpeg, image/png, image/gif"
+                />
         </label>
         <span class="inSpan"></span>
     </div>
