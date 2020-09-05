@@ -1,7 +1,15 @@
 <template>
     <div class="sinput">
-        <label for="">{{label}}</label>
-        <textarea class="inText" rows="5"  @input="$emit('input',$event.target.value)" v-model="$attrs.value"></textarea>
+        <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
+        <textarea
+            class="inText"
+            rows="5"
+            :required="isRequired"
+            :name="name"
+            @input="$emit('input',$event.target.value)"
+            @blur="checkLabel($event)"
+            v-model="$attrs.value">
+        </textarea>
         <span class="inSpan"></span>
     </div>
 </template>
@@ -10,14 +18,36 @@
     export default {
         data () {
             return {
+                errorInfo: ''
             }
         },
         props: {
             label: {
                 type: String,
                 required: true
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            name: {
+                type: String,
+                required: true
             }
         },
+        methods: {
+            checkLabel (e) {
+                if(this.isRequired){
+                    this.errorInfo = e.target.validationMessage
+                    if(this.errorInfo){
+                        this.$emit('reportError', this.name, true)
+                    }else{
+                        this.$emit('reportError', this.name, false)
+                    }
+                }
+            }
+        }
     }
 </script>
 
