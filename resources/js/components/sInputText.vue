@@ -3,7 +3,7 @@
         <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
         <input
             :type="typeInput"
-            class="inInput"
+            class="input"
             @input="$emit('input',$event.target.value)"
             :value="$attrs.value"
             :required="isRequired"
@@ -12,7 +12,7 @@
             :readonly="readOnly"
             @blur="checkLabel($event)"
             :style="(typeInput==='text') ? 'margin-top: 15px;' : 'margin-top: 8px;'">
-        <span class="inSpan"></span>
+        <span class="border"></span>
     </div>
 </template>
 
@@ -76,34 +76,36 @@
     font-size: 12px;
     text-align: left;
 }
-.sinput input{
-    outline: 0;
+
+.input {
     width: 100%;
-    padding: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border: none;
-    background-color: transparent;
-    font-size: 20px;
-}
-.sinput input:not(focus){
+    padding: 10px 0;
     border-bottom: 1px solid #ccc;
 }
-.sinput input:focus{
-    border-bottom: 0px solid white;
+
+.input:focus {
+    outline: none;
 }
-.inInput + span {
-  display: block;
-  border-bottom: 1px solid black;
-  width: 0;
-  -webkit-transition: width 350ms ease-in-out;
-  transition: width 350ms ease-in-out;
+
+.input ~ .border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: black;
+    -webkit-transition: width 200ms ease-in-out;
+    transition: width 200ms ease-in-out;
 }
-.inInput:focus + span {
-  width: 99%;
-  -webkit-transition: width 300ms ease-in-out;
-  transition: width 300ms ease-in-out;
+
+.input:focus ~ .border {
+    width: 100%;
+    -webkit-transition: width 200ms ease-in-out;
+    transition: width 200ms ease-in-out;
 }
 
 </style>

@@ -189,7 +189,7 @@
      position: relative;
      display: block;
      padding: 0 22px 0 22px;
-     font-size: 22px;
+     font-size: 20px;
      font-weight: 300;
      color: #ccc;
      line-height: 60px;
@@ -239,15 +239,15 @@
 }
 
 .custom-select + span {
-  display: block;
-  border-bottom: 1px solid black;
-  width: 0;
-  -webkit-transition: width 350ms ease-in-out;
-  transition: width 350ms ease-in-out;
+    display: block;
+    border-bottom: 1px solid black;
+    width: 0;
+    -webkit-transition: width 350ms ease-in-out;
+    transition: width 350ms ease-in-out;
 }
 .custom-select:focus + span {
-  width: 90%;
-  -webkit-transition: width 300ms ease-in-out;
-  transition: width 300ms ease-in-out;
+    width: 90%;
+    -webkit-transition: width 300ms ease-in-out;
+    transition: width 300ms ease-in-out;
 }
 </style>

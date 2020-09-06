@@ -2,7 +2,7 @@
     <div class="sinput">
         <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
         <textarea
-            class="inText"
+            class="input"
             rows="5"
             :required="isRequired"
             :name="name"
@@ -10,7 +10,7 @@
             @blur="checkLabel($event)"
             v-model="$attrs.value">
         </textarea>
-        <span class="inSpan"></span>
+        <span class="border"></span>
     </div>
 </template>
 
@@ -64,35 +64,35 @@
     font-size: 12px;
     text-align: left;
 }
-.sinput textarea{
-    outline: 0;
+
+.input {
     width: 100%;
-    margin-top: 8px;
-    padding: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border: none;
-    background-color: transparent;
-    font-size: 20px;
-}
-.sinput textarea:not(focus){
+    padding: 10px 0;
     border-bottom: 1px solid #ccc;
 }
-.sinput textarea:focus{
-    border-bottom: 0px solid white;
+.input:focus {
+    outline: none;
 }
-.inText + span {
-  display: block;
-  border-bottom: 1px solid black;
-  width: 0;
-  -webkit-transition: width 350ms ease-in-out;
-  transition: width 350ms ease-in-out;
+
+.input ~ .border {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: black;
+    -webkit-transition: width 250ms ease-in-out;
+    transition: width 250ms ease-in-out;
 }
-.inText:focus + span {
-  width: 90%;
-  -webkit-transition: width 300ms ease-in-out;
-  transition: width 300ms ease-in-out;
+
+.input:focus ~ .border {
+    width: 100%;
+    -webkit-transition: width 250ms ease-in-out;
+    transition: width 250ms ease-in-out;
 }
 
 </style>
