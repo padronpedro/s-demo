@@ -5,7 +5,7 @@
             <div class='bodywrap'>
                 <div class='left'>
                     <div class="burger" @click="openMenu">
-                        <i class="material-icons">dehaze</i>
+                        <img :src="mySVG" >
                     </div>
                 </div>
                 <div class='right'>
@@ -20,11 +20,12 @@
         </div>
     </div>
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" @click="closeMenu()"><i class="material-icons">close</i></a>
-        <a @click.prevent="goMenu('admin.home')">Home</a>
+        <a href="javascript:void(0)" class="closebtn" @click="closeMenu()"><img :src="closeBlack" ></a>
+        <a @click.prevent="goMenu('home')">Home</a>
         <a @click.prevent="goMenu('admin.projects')">Projects</a>
         <a @click.prevent="goMenu('admin.members')">Members</a>
         <a @click.prevent="goMenu('admin.clients')">Clients</a>
+        <a href="javascript:void(0)" class="logo-side" ><img :src="logoSig" ></a>
     </div>
 </div>
 </template>
@@ -33,6 +34,13 @@
 
 <script>
 	export default {
+        data (){
+            return {
+                mySVG: require('./assets/menu.svg'),
+                logoSig: require('./assets/signifly.svg'),
+                closeBlack: require('./assets/close-black.svg')
+            }
+        },
 		methods: {
             goMenu (toRoute) {
                 this.$goRouter(toRoute)
@@ -156,9 +164,17 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    margin-left: 30px;
-    margin-top: 40px;
+    margin-left: 25px;
+    margin-top: 35px;
     color:black;
+    background-color: white;
+    border-radius: 50px;
+}
+.burger img {
+    width: 30px;
+    position: relative;
+    left: 5px;
+    top: 5px;
 }
 .logo{
     position: relative;
@@ -186,7 +202,13 @@ html, body {
 .bodywrap {
     margin-top:100px;
 }
-.left, .right {
+.left {
+    width:100px;
+    top: 10px;
+    bottom: 0px;
+    position: fixed;
+}
+.right {
     width:100px;
     top: 10px;
     bottom: 0px;
@@ -205,13 +227,13 @@ html, body {
     right:0
 }
 .left {
-    background-color:white;
+    background-color:transparent;
 }
 .right {
-    background-color:white;
+    background-color:transparent;
 }
 .head {
-    background-color:white;
+    background-color:transparent;
 }
 .container {
     width:100%;
@@ -220,6 +242,31 @@ html, body {
     width:calc(100% - 400px)
 }
 
+@media screen and (max-width: 992px) {
+    .center{
+        width:calc(100% - 10px);
+        margin: 100px 10px 0 4px;
+    }
+    .sidenav {
+        text-align: center;
+    }
+    .sidenav a{
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .center{
+        width:calc(100% - 10px);
+        margin: 100px 10px 0 4px;
+    }
+    .sidenav {
+        text-align: center;
+    }
+    .sidenav a{
+        font-size: 20px;
+    }
+}
 
 .sidenav {
   height: 100%;
@@ -244,11 +291,11 @@ html, body {
     color: #fff;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 80px;
+    font-size: 70px;
     font-weight: 700;
     transition: opacity .3s;
     line-height: 1;
-    margin-left: 80px;
+    margin-left: 50px;
     font-family: 'Anton', sans-serif;
     cursor: pointer;
 }
@@ -259,14 +306,26 @@ html, body {
 
 .sidenav .closebtn {
   position: absolute;
-  top: 35px;
+  top: 43px;
   font-size: 36px;
   margin-left: 0;
 }
-
+.closebtn img {
+  background-color: white;
+  border-radius: 50px;
+  width: 30px;
+}
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+.logo-side img {
+    width:100px;
+    position: relative;
+    top: 35px;
+    font-size: 36px;
+    margin-right: 50px;
 }
 </style>
