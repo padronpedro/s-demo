@@ -68,12 +68,26 @@
         },
         methods: {
             checkLabel (e) {
-                if(this.isRequired){
-                    this.errorInfo = e.target.validationMessage
-                    if(this.errorInfo){
+                let errorFound = false;
+                if(this.typeInput === 'number')
+                {
+                    if(Number(e.target.value)>99999.99){
+                        this.errorInfo = '  Max value is 99999.99'
                         this.$emit('reportError', this.name, true)
+                        errorFound = true
                     }else{
+                        this.errorInfo = ''
                         this.$emit('reportError', this.name, false)
+                    }
+                }
+                if(!errorFound){
+                    if(this.isRequired){
+                        this.errorInfo = e.target.validationMessage
+                        if(this.errorInfo){
+                            this.$emit('reportError', this.name, true)
+                        }else{
+                            this.$emit('reportError', this.name, false)
+                        }
                     }
                 }
             }
