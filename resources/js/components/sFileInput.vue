@@ -38,7 +38,7 @@ export default {
 <style scoped>
 .sinput {
     width: 100%;
-    margin-top: 28px;
+    margin-top: 32px;
     position: relative;
     border-bottom: 1px solid #ccc;
 }
@@ -59,6 +59,7 @@ export default {
   text-align: left;
   font-weight: bold;
   font-size: 14px;
+  margin-top: 14px;
 }
 
 .file-select > input[type="file"] {

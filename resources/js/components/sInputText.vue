@@ -11,7 +11,7 @@
             :name="name"
             :readonly="readOnly"
             @blur="checkLabel($event)"
-            :style="(typeInput==='text') ? 'margin-top: 15px;' : 'margin-top: 8px;'">
+            :style="(typeInput==='date') ? 'padding-bottom: 7px;' : ''">
         <span class="border"></span>
     </div>
 </template>
