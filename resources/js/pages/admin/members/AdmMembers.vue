@@ -7,7 +7,7 @@
                 <s-button :buttonText="'Add a new member'" @clickAction="clickAddMember" style="float:right"></s-button>
             </div>
 
-            <p v-if="(dataTable.length===0) && !loadingData">No clients found</p>
+            <p v-if="(dataTable.length===0) && !loadingData">No members found</p>
             <div v-if="loadingData" class="loadingDatatable">
                 Loading members list....
             </div>
