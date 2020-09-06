@@ -20,7 +20,7 @@
                 Select
             </div>
         </div>
-        <modal-member-card ref="modalMember" />
+        <modal-member-card ref="modalMember" :name="modalMember.name" v-if="displayDetail" @closeModalMember="displayDetail=false" />
     </div>
 </template>
 
@@ -28,8 +28,12 @@
 export default {
   data () {
     return {
+        displayDetail: false,
         checkedProxy: false,
-        checked: false
+        checked: false,
+        modalMember: {
+            name: 'pedro'
+        }
     }
   },
   mounted () {
@@ -73,7 +77,10 @@ export default {
   },
   methods: {
       showDetails() {
-          this.$refs.modalMember.openModal(this.id)
+          this.displayDetail = true
+          this.$nextTick (() => {
+              this.$refs.modalMember.openModal(this.id)
+          })
       },
       verifyCheck () {
         let auxList = this.initialValues

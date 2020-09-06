@@ -1,29 +1,35 @@
 <template>
   <div id="myModal" class="modal">
-      <div class="modal-content">
-        <div class="top">
-          <div class="logo"><img src="../assets/signifly.svg" width="30%"></div>
-          <div class="top-titles">
-            <div class="title">{{name}}</div>
-            <div class="subtitle">{{position}}</div>
-            <div class="subtitle2">{{email}}  {{phone}}</div>
-          </div>
+        <div class="modal-content">
+            <div class="top">
+                <div class="logo"><img src="../assets/signifly.svg" width="30%"></div>
+                <div class="top-titles">
+                    <div class="title">{{name}}</div>
+                    <div class="subtitle">{{position}}</div>
+                    <div class="subtitle2">{{email}}  {{phone}}</div>
+                </div>
+            </div>
+            <div class="modal-main-content" >
+                <div class="row">
+                    <div class="column">
+                        <p style="text-align:justify">{{description}}</p>
+                    </div>
+                    <div class="column">
+                        <div class="imageBox">
+                            <img :src="'/members/' + (picturePath ? picturePath : 'no_image.jpeg')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="modal-btn">
+                    <s-button
+                        :buttonText="'Close'"
+                        @clickAction="closeModal"
+                        style="float:right" />
+                </div>
+            </div>
         </div>
-        <div class="modal-main-content" >
-          <p>{{description}}</p>
-          <div class="imageBox">
-            <img :src="'/members/' + (picturePath ? picturePath : 'no_image.jpeg')">
-          </div>
-        </div>
-        <div class="bottom">
-          <div class="modal-btn">
-            <s-button
-                :buttonText="'Close'"
-                @clickAction="closeModal"
-                style="float:right" />
-          </div>
-        </div>
-      </div>
     </div>
 </template>
 
@@ -31,24 +37,27 @@
 export default {
   data () {
     return {
-      infoMember: '',
-      name: '',
-      email: '',
-      phone: '',
-      position: '',
-      description: '',
-      picturePath: '',
+        loadSkeleton: false,
+        infoMember: '',
+        name: '',
+        email: '',
+        phone: '',
+        position: '',
+        description: '',
+        picturePath: '',
     }
   },
   watch: {
       infoMember () {
-          this.getMemberInfo()
+
       }
   },
   methods: {
     getMemberInfo() {
+        this.loadSkeleton = true
         axios.get('/api/v1/members/' + this.infoMember, {})
             .then(response => {
+                this.loadSkeleton = false
                 let info = response.data
                 if(info.status === 'SUCCESS') {
                     this.name = info.data.name;
@@ -64,6 +73,7 @@ export default {
                 }
             })
             .catch(error => {
+                this.loadSkeleton = false
                 console.log(error)
             })
     },
@@ -71,17 +81,37 @@ export default {
       var modal = document.getElementById('myModal')
       modal.style.display = 'block'
       this.infoMember = auxMember
+      this.getMemberInfo()
     },
     closeModal () {
-      var modal = document.getElementById('myModal')
-      modal.style.display = 'none'
+        this.infoMember = ''
+        this.name = ''
+        this.email = ''
+        this.phone = ''
+        this.position = ''
+        this.description = ''
+        this.picturePath = ''
+        var modal = document.getElementById('myModal')
+        modal.style.display = 'none'
+        this.$emit('closeModalMember')
     },
   }
 }
 </script>
 
 <style scoped>
+.column {
+  float: left;
+  width: 44%;
+  padding: 10px;
+}
 
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -99,13 +129,16 @@ export default {
   overflow: auto;
   height: 70%;
 }
+.modal-main-content div{
+    display: inline-block;
+}
 .modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  height: 400px;
+  height: 450px;
 }
 .close {
   color: #aaaaaa;
@@ -133,7 +166,7 @@ export default {
   text-align: center;
 }
 .imageBox img{
-  width: 50%;
+  width: 70%;
 }
 .logo {
   display: block;
