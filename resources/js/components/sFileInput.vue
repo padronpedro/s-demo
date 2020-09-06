@@ -4,11 +4,23 @@
         <label class="file-select">
             <div class="select-button">
             <span v-if="value" class="file-selected-name">
-                <i class="material-icons">attach_file</i>
+                <inline-svg
+                    :src="fileIcon"
+                    width="25"
+                    height="25"
+                    fill="black"
+                    aria-label="attachFile"
+                ></inline-svg>
                 Selected file: {{value.name}}
             </span>
             <span v-else>
-                <i class="material-icons">attach_file</i>
+                <inline-svg
+                    :src="fileIcon"
+                    width="25"
+                    height="25"
+                    fill="black"
+                    aria-label="attachFile"
+                ></inline-svg>
                 Select a file</span>
             </div>
             <input
@@ -23,6 +35,11 @@
 
 <script>
 export default {
+    data () {
+        return {
+            fileIcon: require('../assets/attach.svg'),
+        }
+    },
   props: {
     value: File,
     label: String

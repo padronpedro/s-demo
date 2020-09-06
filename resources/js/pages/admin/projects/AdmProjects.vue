@@ -30,9 +30,23 @@
                             <td>{{dataTable.start_date}}</td>
                             <td>{{dataTable.end_date}}</td>
                             <td>{{dataTable.client ? dataTable.client.name : ''}}</td>
-                            <td class="colActions">
-                                <s-icon :name="'Edit'" :iconName="'edit'" @actionCalled="editProject(dataTable.id)"></s-icon>
-                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="openConfirmDelete(dataTable.id)"></s-icon>
+                            <td class="colActions cEditIcon">
+                                <inline-svg
+                                    :src="editIcon"
+                                    width="30"
+                                    height="30"
+                                    fill="black"
+                                    aria-label="editPro"
+                                    @click="editProject(dataTable.id)"
+                                ></inline-svg>
+                                <inline-svg
+                                    :src="deleteIcon"
+                                    width="30"
+                                    height="30"
+                                    fill="black"
+                                    aria-label="editPro"
+                                    @click="openConfirmDelete(dataTable.id)"
+                                ></inline-svg>
                             </td>
                         </tr>
                     </tbody>
@@ -49,6 +63,8 @@
   export default {
     data () {
       return {
+          editIcon: require('../../../assets/edit.svg'),
+          deleteIcon: require('../../../assets/delete.svg'),
           loadingData: false,
           dataTable: [],
           dataTableHeader: [
@@ -130,7 +146,5 @@
 .top-module div {
     display: inline-block;
 }
-
-
 
 </style>

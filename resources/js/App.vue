@@ -5,7 +5,14 @@
             <div class='bodywrap'>
                 <div class='left'>
                     <div class="burger" @click="openMenu">
-                        <img :src="mySVG" >
+                        <inline-svg
+                            @click="closeMenu()"
+                            :src="burgerIcon"
+                            width="38"
+                            height="30"
+                            fill="black"
+                            aria-label="Close"
+                        ></inline-svg>
                     </div>
                 </div>
                 <div class='right'>
@@ -20,12 +27,34 @@
         </div>
     </div>
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" @click="closeMenu()"><img :src="closeBlack" ></a>
-        <a @click.prevent="goMenu('home')">Home</a>
-        <a @click.prevent="goMenu('admin.projects')">Projects</a>
-        <a @click.prevent="goMenu('admin.members')">Members</a>
-        <a @click.prevent="goMenu('admin.clients')">Clients</a>
-        <a href="javascript:void(0)" class="logo-side" ><img :src="logoSig" ></a>
+        <div class="header-sidenav">
+            <div style="float:left"  class="closebtn">
+                    <inline-svg
+                    @click="closeMenu()"
+                    :src="closeBlack"
+                    width="38"
+                    height="30"
+                    fill="black"
+                    aria-label="Close"
+                ></inline-svg>
+            </div>
+            <div class="logo-side" >
+                <inline-svg
+                    :src="logoSig"
+                    width="50"
+                    height="50"
+                    fill="white"
+                    aria-label="Logo"
+                ></inline-svg>
+
+            </div>
+        </div>
+        <div class="options-sidenav">
+            <a @click.prevent="goMenu('home')">Home</a>
+            <a @click.prevent="goMenu('admin.projects')">Projects</a>
+            <a @click.prevent="goMenu('admin.members')">Members</a>
+            <a @click.prevent="goMenu('admin.clients')">Clients</a>
+        </div>
     </div>
 </div>
 </template>
@@ -33,12 +62,13 @@
 
 
 <script>
+
 	export default {
         data (){
             return {
-                mySVG: require('./assets/menu.svg'),
+                burgerIcon: require('./assets/menu.svg'),
                 logoSig: require('./assets/signifly.svg'),
-                closeBlack: require('./assets/close-black.svg')
+                closeBlack: require('./assets/close-black.svg'),
             }
         },
 		methods: {
@@ -123,6 +153,10 @@
 .title-info-client {
     margin-top: 20px;
 }
+
+.cEditIcon{
+    cursor: pointer;
+}
 </style>
 
 <style scoped>
@@ -165,7 +199,7 @@
     -ms-user-select: none;
     user-select: none;
     margin-left: 25px;
-    margin-top: 35px;
+    margin-top: 40px;
     color:black;
     background-color: white;
     border-radius: 50px;
@@ -278,7 +312,7 @@ html, body {
   background-color: #4f00cf;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding-top: 10px;
 }
 
 .sidenav a {
@@ -295,7 +329,7 @@ html, body {
     font-weight: 700;
     transition: opacity .3s;
     line-height: 1;
-    margin-left: 50px;
+    margin-left: 0;
     font-family: 'Anton', sans-serif;
     cursor: pointer;
 }
@@ -304,28 +338,32 @@ html, body {
   color: #f1f1f1;
 }
 
-.sidenav .closebtn {
-  position: absolute;
-  top: 43px;
-  font-size: 36px;
-  margin-left: 0;
-}
-.closebtn img {
+
+.closebtn  {
   background-color: white;
-  border-radius: 50px;
-  width: 30px;
+  border-radius: 50%;
+  float: left;
+    margin-left: 25px;
+    margin-top: 40px;
 }
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+.logo-side {
+    float: right;
+    margin-right: 17px;
+    margin-top: 23px;
+}
 
-.logo-side img {
-    width:100px;
-    position: relative;
-    top: 35px;
-    font-size: 36px;
-    margin-right: 50px;
+.options-sidenav  {
+    margin-top:100px;
+    text-align:left;
+    margin-left: 50px;
+}
+
+.header-sidenav div {
+    display: inline-block;
 }
 </style>

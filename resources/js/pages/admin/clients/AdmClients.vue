@@ -30,9 +30,23 @@
                             <td>{{dataTable.contact}}</td>
                             <td>{{dataTable.phone}}</td>
                             <td>{{dataTable.email}}</td>
-                            <td class="colActions">
-                                <s-icon :name="'Edit'" :iconName="'edit'" @actionCalled="editClient(dataTable.id)"></s-icon>
-                                <s-icon :name="'Delete'" :iconName="'delete'" @actionCalled="openConfirmDelete(dataTable.id)"></s-icon>
+                            <td class="colActions cEditIcon">
+                                <inline-svg
+                                    :src="editIcon"
+                                    width="30"
+                                    height="30"
+                                    fill="black"
+                                    aria-label="editPro"
+                                    @click="editClient(dataTable.id)"
+                                ></inline-svg>
+                                <inline-svg
+                                    :src="deleteIcon"
+                                    width="30"
+                                    height="30"
+                                    fill="black"
+                                    aria-label="editPro"
+                                    @click="openConfirmDelete(dataTable.id)"
+                                ></inline-svg>
                             </td>
                         </tr>
                     </tbody>
@@ -50,6 +64,8 @@
   export default {
     data () {
       return {
+          editIcon: require('../../../assets/edit.svg'),
+          deleteIcon: require('../../../assets/delete.svg'),
           loadingData: false,
           dataTable: [],
           dataTableHeader: [

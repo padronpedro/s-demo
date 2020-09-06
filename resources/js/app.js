@@ -14,8 +14,9 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import router from './router/router';
 import Vue from 'vue';
-
+import {InlineSvgPlugin} from 'vue-inline-svg';
 window.Vue = require('vue');
+Vue.use(InlineSvgPlugin);
 
 Vue.router = router;
 Vue.use(VueRouter)
