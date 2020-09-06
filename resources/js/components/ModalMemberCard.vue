@@ -11,7 +11,7 @@
             </div>
             <div class="modal-main-content" >
                 <div class="row">
-                    <div class="column">
+                    <div class="column" style="width: 50%;">
                         <p style="text-align:justify">{{description}}</p>
                         <div class="list-chip">
                             <div v-for="(oneSkill,index) in skills" :key="index" class="one-chip">
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column">
+                    <div class="column" style="width: 34%;">
                         <div class="imageBox">
                             <img :src="'/members/' + (picturePath ? picturePath : 'no_image.jpeg')">
                         </div>
@@ -114,7 +114,6 @@ export default {
 <style scoped>
 .column {
   float: left;
-  width: 44%;
   padding: 10px;
 }
 
@@ -150,7 +149,7 @@ export default {
   padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  height: 450px;
+  height: 500px;
 }
 .close {
   color: #aaaaaa;
@@ -174,11 +173,14 @@ export default {
 .bottom div{
   margin-right: 5px;
 }
+.column div{
+    text-align: right;
+}
 .imageBox {
   text-align: center;
 }
 .imageBox img{
-  width: 70%;
+  width: 80%;
 }
 .logo {
   display: block;
