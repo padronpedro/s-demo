@@ -63,11 +63,10 @@
                             :name="'project_link'"
                             :readOnly="true"
                             @reportError="processError"
+                            :rightIcon="project_link ? true : false"
+                            @icon-action="copyToClipboard"
                             >
                         </s-input-text>
-                    </div>
-                    <div v-if="project_link">
-                        <s-button @clickAction="copyToClipboard" :buttonText="'Copy'"></s-button>
                     </div>
                 </div>
                 <div class="flex-container-col">

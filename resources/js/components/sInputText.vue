@@ -1,18 +1,30 @@
 <template>
     <div class="sinput">
-        <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
-        <input
-            :type="typeInput"
-            class="input"
-            @input="$emit('input',$event.target.value)"
-            :value="$attrs.value"
-            :required="isRequired"
-            :autocomplete="'new-password'"
-            :name="name"
-            :readonly="readOnly"
-            @blur="checkLabel($event)"
-            :style="(typeInput==='date') ? 'padding-bottom: 7px;' : ''">
-        <span class="border"></span>
+        <div :style="rightIcon ? 'width:90%' : 'width:100%'">
+            <label for="">{{label}}{{isRequired ? '* ' : ''}}<span style="color:red">{{errorInfo}}</span></label>
+            <input
+                :type="typeInput"
+                class="input"
+                @input="$emit('input',$event.target.value)"
+                :value="$attrs.value"
+                :required="isRequired"
+                :autocomplete="'new-password'"
+                :name="name"
+                :readonly="readOnly"
+                @keyup="$emit('auxkeyup',$event)"
+                @blur="checkLabel($event)"
+                :style="(typeInput==='date') ? 'padding-bottom: 7px;' : ''">
+            <span class="border"></span>
+        </div>
+        <div v-if="rightIcon" @click.prevent="$emit('icon-action')" style="cursor:pointer">
+            <inline-svg
+                    :src="fileIcon"
+                    width="15"
+                    height="15"
+                    fill="black"
+                    aria-label="attachFile"
+                ></inline-svg>
+        </div>
     </div>
 </template>
 
@@ -20,7 +32,8 @@
     export default {
         data () {
             return {
-                errorInfo: ''
+                errorInfo: '',
+                fileIcon: require('../assets/copy.svg'),
             }
         },
         props: {
@@ -45,6 +58,11 @@
             readOnly: {
                 type: Boolean,
                 required: false,
+                default: false
+            },
+            rightIcon: {
+                type: Boolean,
+                require: false,
                 default: false
             }
         },
@@ -76,7 +94,9 @@
     font-size: 12px;
     text-align: left;
 }
-
+.sinput div {
+    display: inline-block;
+}
 .input {
     width: 100%;
     -webkit-appearance: none;
