@@ -11,7 +11,7 @@
         <div class="project-name">{{name}}</div>
         <div class="project-client">{{client ? client.name : ''}}</div>
         <div>{{description}}</div>
-        <div class="project-constraints">Constraints</div>
+        <div class="project-constraints" v-if="constraints">Constraints</div>
         <div>{{constraints}}</div>
         <div class="project-constraints">Estimation</div>
         <div class="project-estimation">
