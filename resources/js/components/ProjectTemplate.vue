@@ -1,20 +1,20 @@
 <template>
     <div>
         <div>
-            <div class="title-form">
+            <div class="title-form margin-text-request">
                 Project details
             </div>
-             <span>
+             <div class="margin-text-request">
                 Thank you for being part of our distinguished clients. Below you will find the detailed and updated information of your project. If you have any questions, do not hesitate to contact us.
-            </span>
+            </div>
         </div>
-        <div class="project-name">{{name}}</div>
-        <div class="project-client">{{client ? client.name : ''}}</div>
-        <div>{{description}}</div>
-        <div class="project-constraints" v-if="constraints">Constraints</div>
-        <div>{{constraints}}</div>
-        <div class="project-constraints">Estimation</div>
-        <div class="project-estimation">
+        <div class="project-name margin-text-request">{{name}}</div>
+        <div class="project-client margin-text-request">{{client ? client.name : ''}}</div>
+        <div class="margin-text-request">{{description}}</div>
+        <div class="project-constraints margin-text-request" v-if="constraints">Constraints</div>
+        <div class="margin-text-request">{{constraints}}</div>
+        <div class="project-constraints margin-text-request">Estimation</div>
+        <div class="project-estimation margin-text-request">
             <div>
                 <div>
                     {{start_date ? start_date: 'TBD'}}
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="project-constraints">Project team</div>
+        <div class="project-constraints margin-text-request">Project team</div>
 
         <div v-for="(oneItem,index) in members" :key="index" class="pic-team-list">
             <s-team-card
@@ -146,5 +146,10 @@ export default {
 .project-subtitle{
     font-size: 12px;
     font-weight: bold;
+}
+
+.margin-text-request{
+    margin: 15px;
+    text-align: justify;
 }
 </style>

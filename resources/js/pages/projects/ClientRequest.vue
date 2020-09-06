@@ -4,13 +4,13 @@
             <div class="title-form">
                 Project Request
             </div>
-            <span>
+            <div class="margin-text-request">
                 Already have a digital project in mind? Or simply have a digital challenge you’re not sure how to solve. We would be happy to help you!.
                 Fill out the form, and we look forward to build your project.
-            </span>
+            </div>
         </div>
 
-        <div class="title-info-client">
+        <div class="title-info-client margin-text-request">
             Tell us about you and your company to be able to contact you soon.
         </div>
         <div class="flex-container">
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="title-info-client">
+        <div class="title-info-client margin-text-request">
             Now you can tell us about the project that you want to have.
         </div>
 
@@ -113,11 +113,11 @@
         </div>
 
 
-        <div class="title-info-client">
+        <div class="title-info-client margin-text-request">
             Our team is composed of experts in the fields of strategy, design and technology. We design strong concepts and bring them to life through confident digital craftsmanship.
             You can build your dream team to build your project!.
         </div>
-        <div style="margin-bottom: 10px">
+        <div class="margin-text-request">
             <h4>Select your build team</h4>
 
             <div v-for="(oneItem,index) in dataTable" :key="index" class="pic-team-list">
@@ -131,7 +131,7 @@
             </div>
 
         </div>
-        <div class="box-bottom">
+        <div class="box-bottom margin-text-request">
             <s-button :buttonText="'Send Request'" @clickAction="clickSendRequest"></s-button>
             <s-button :buttonText="'Cancel'" @clickAction="clickCancelRequest"></s-button>
         </div>
@@ -303,7 +303,10 @@ export default {
 }
 .pic-team-list {
     display: inline-block;
-
+}
+.margin-text-request{
+    margin: 15px;
+    text-align: justify;
 }
 
 </style>
