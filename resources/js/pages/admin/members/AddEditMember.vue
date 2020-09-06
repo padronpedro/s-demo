@@ -94,7 +94,7 @@
                 picturePath: '',
                 formErrors: [],
                 breadCrumbs: [
-                    { text: 'Home', link: 'admin.home'},
+                    { text: 'Home', link: 'home'},
                     { text: 'Members', link: 'admin.members'},
                     { text: 'Member information', link: ''},
                 ]

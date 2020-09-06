@@ -148,7 +148,7 @@
                 teamMembers: [],
                 formErrors: [],
                 breadCrumbs: [
-                    { text: 'Home', link: 'admin.home'},
+                    { text: 'Home', link: 'home'},
                     { text: 'Projects', link: 'admin.projects'},
                     { text: 'Project information', link: ''},
                 ]

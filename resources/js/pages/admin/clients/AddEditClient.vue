@@ -93,7 +93,7 @@
                 clientId: '',
                 formErrors: [],
                 breadCrumbs: [
-                    { text: 'Home', link: 'admin.home'},
+                    { text: 'Home', link: 'home'},
                     { text: 'Clients', link: 'admin.clients'},
                     { text: 'Client information', link: ''},
                 ]

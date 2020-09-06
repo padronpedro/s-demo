@@ -17,7 +17,7 @@
                 <s-button :buttonText="'Project request'" @clickAction="$goRouter('client.project.request')"></s-button>
             </div>
             <div class="flex-container-col">
-                <s-button :buttonText="'Administrator'" @clickAction="$goRouter('admin.home')"></s-button>
+                <s-button :buttonText="'Manage projects'" @clickAction="$goRouter('admin.projects')"></s-button>
             </div>
         </div>
     </div>

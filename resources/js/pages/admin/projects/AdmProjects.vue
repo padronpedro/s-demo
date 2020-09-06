@@ -80,7 +80,7 @@
               id: 0,
           },
           breadCrumbs: [
-                { text: 'Home', link: 'admin.home'},
+                { text: 'Home', link: 'home'},
                 { text: 'Projects', link: ''}
             ]
       }
