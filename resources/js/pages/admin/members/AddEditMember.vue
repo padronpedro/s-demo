@@ -24,6 +24,7 @@
                         :label="'Email'"
                         v-model="email"
                         :name="'email'"
+                        :typeInput="'email'"
                         :isRequired="true"
                         @reportError="processError">
                     </s-input-text>
@@ -58,7 +59,10 @@
                         v-if="picturePath" />
                 </div>
             </div>
-            <div>
+            <div style="margin:10px">
+                <s-chips v-model="skills" :label="'Skills (type and press enter)'"></s-chips>
+            </div>
+            <div style="margin:10px">
                 <s-textarea
                     :label="'Background'"
                     v-model="description"
@@ -90,6 +94,7 @@
                 editMode: false,
                 snackText: '',
                 memberId: '',
+                skills: [],
                 picture: null,
                 picturePath: '',
                 formErrors: [],
@@ -148,6 +153,12 @@
                             this.position = info.data.position;
                             this.description = info.data.description;
                             this.picturePath = info.data.picture;
+                            let aux  = info.data.skills
+                            if(aux){
+                                this.skills = aux.split(',')
+                            }else{
+                                this.skills = []
+                            }
                         } else {
                             this.$refs.snackbar.showSnack(info.message, 'error')
                             setTimeout(() => {
@@ -166,12 +177,13 @@
                     {
                         formData.append('picture',this.picture, this.picture.name);
                     }
-
+                    this.phone = (this.phone ? this.phone : '')
                     formData.append('name', this.name);
                     formData.append('email', this.email);
-                    formData.append('phone', this.phone);
+                    formData.append('phone', this.phone ? this.phone : '');
                     formData.append('position', this.position);
-                    formData.append('description', this.description);
+                    formData.append('description', this.description ? this.description : '');
+                    formData.append('skills', this.skills ? this.skills : '');
 
                     this.$refs.snackbar.showSnack('Saving member information, wait a moment please', 'success')
 

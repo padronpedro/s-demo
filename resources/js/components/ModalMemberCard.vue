@@ -13,6 +13,11 @@
                 <div class="row">
                     <div class="column">
                         <p style="text-align:justify">{{description}}</p>
+                        <div class="list-chip">
+                            <div v-for="(oneSkill,index) in skills" :key="index" class="one-chip">
+                                <one-chip :chipText="oneSkill" />
+                            </div>
+                        </div>
                     </div>
                     <div class="column">
                         <div class="imageBox">
@@ -43,6 +48,7 @@ export default {
         email: '',
         phone: '',
         position: '',
+        skills: '',
         description: '',
         picturePath: '',
     }
@@ -66,6 +72,12 @@ export default {
                     this.position = info.data.position;
                     this.description = info.data.description;
                     this.picturePath = info.data.picture;
+                    let aux  = info.data.skills
+                    if(aux){
+                        this.skills = aux.split(',')
+                    }else{
+                        this.skills = []
+                    }
                 } else {
                     setTimeout(() => {
                         this.closeModal()
@@ -209,5 +221,11 @@ export default {
   font-size: 12px;
 }
 
-
+.list-chip{
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-chip div{
+  display: inline-block;
+}
 </style>

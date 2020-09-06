@@ -21,6 +21,7 @@ class CreateMembersTable extends Migration
             $table->text('description')->nullable();
             $table->string('phone')->nullable();
             $table->string('picture')->nullable();
+            $table->text('skills')->nullable();
             $table->timestamps();
         });
     }

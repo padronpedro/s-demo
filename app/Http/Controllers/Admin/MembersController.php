@@ -58,6 +58,7 @@ class MembersController extends Controller
             $member->phone = $request->input('phone');
             $member->position = $request->input('position');
             $member->description = $request->input('description');
+            $member->skills = $request->input('skills');
             $member->save();
 
             if($request->picture)
@@ -139,7 +140,7 @@ class MembersController extends Controller
             $changeMember->phone = $request->input('phone');
             $changeMember->position = $request->input('position');
             $changeMember->description = $request->input('description');
-
+            $changeMember->skills = $request->input('skills');
             $changeMember->save();
 
             if($request->picture)
